@@ -1,0 +1,25 @@
+{
+  "name": "2faauthentication-fileuploadservice",
+  "version": "1.0.0",
+  "description": "developing a kryptonian 2FA-authentication system that can allow for file uploads to train AI in the future",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PrevailUzodinma/2FAauthentication-fileuploadservice.git"
+  },
+  "author": "iPrevail",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PrevailUzodinma/2FAauthentication-fileuploadservice/issues"
+  },
+  "homepage": "https://github.com/PrevailUzodinma/2FAauthentication-fileuploadservice#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.4.0"
+  }
+}
