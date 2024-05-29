@@ -3,16 +3,14 @@ const bcrypt = require("bcryptjs");
 const { v4: uuidv4 } = require("uuid");
 
 class UserService {
-  async createUser(email, password, apiKey) {
+  async register(email, password) {
     try {
       const saltRounds = 10;
       const salt = await bcrypt.genSalt(saltRounds);
       const hashedpassword = await bcrypt.hash(password, salt);
-      apiKey = uuidv4();
       const newUser = await User.create({
         email,
-        password: hashedpassword,
-        apiKey,
+        password: hashedpassword
       });
       return newUser;
     } catch (error) {

@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   // to store APIkey generated during registration
-  apikey: {
+  apiKey: {
     type: String,
     required: true,
     unique: true,
