@@ -4,6 +4,8 @@ const sendConfirmationEmail = require("../utils/email");
 class UserController {
   async register(req, res) {
     try {
+      console.log(req.body)
+
       // extract user details from request body
       const { email, password } = req.body;
       // create new user
