@@ -14,7 +14,9 @@ class UserService {
       });
       return newUser;
     } catch (error) {
-      throw new Error("error occured while creating user");
+      throw new Error("Error occured while creating user in database");
     }
   }
 }
+
+module.exports = new UserService()
