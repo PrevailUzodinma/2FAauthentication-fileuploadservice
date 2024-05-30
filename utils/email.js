@@ -1,24 +1,25 @@
-const axios = require("axios");
+const nodemailer = require('nodemailer');
 
-// create a function to send an email using Elastic Email's API:
+const sendEmail = async (option) => {
+    // Create a Transporter: the service that will send the email
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: "vailchris25@gmail.com",
+          pass: 'cotmfsxphxrfahdh'
+        }
+      });
 
-const sendConfirmationEmail = async (email, confirmationLink) => {
-    const data = {
-      apikey: process.env.ELASTIC_EMAIL_API_KEY,
-      from: 'theiprevail@gmail.com', // My sender email
-      to: email,
-      subject: 'Email Confirmation',
-      bodyText: `Please confirm your email by clicking the following link: ${confirmationLink}`,
-      isTransactional: true,
-    };
-  
-    try {
-      const response = await axios.post('https://api.elasticemail.com/v4/emails/transactional', new URLSearchParams(data));
-      console.log('Email sent:', response.data);
-    } catch (error) {
-      console.error('Error sending email:', error.response ? error.response.data : error.message);
-      throw new Error('Error sending confirmation email');
-    }
-  };
+      // Define Email options
+      const emailOptions = {
+        from: "Kryptonia Support<support@kryptonia.com>",
+        to: option.email,
+        subject: option.subject,
+        text: option.message
+      }
 
-  module.exports = sendConfirmationEmail;
+      await transporter.sendMail(emailOptions)
+    
+}
+
+module.exports = sendEmail;

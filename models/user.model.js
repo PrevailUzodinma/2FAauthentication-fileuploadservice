@@ -10,12 +10,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // to store APIkey generated during registration
-  apiKey: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   // to track the confirmation status of a user
   confirmed: {
     type: Boolean,
