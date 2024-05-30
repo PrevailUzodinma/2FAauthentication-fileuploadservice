@@ -17,7 +17,7 @@ class UserService {
       throw new Error("Error occured while creating user in database");
     }
   }
-
+  // find user by id
   async findUserById(id) {
     try {
       const user = await User.findById({ _id: id });
@@ -26,6 +26,16 @@ class UserService {
       throw new Error("error occured while finding a user by id");
     }
   }
+  // find user by email
+  async findUserByEmail(userEmail) {
+    try {
+      const user = await User.findOne({ email: userEmail });
+      return user;
+    } catch (error) {
+      throw new Error("error occured while finding a user by email");
+    }
+  }
+
   // fetch all users
   async fetch(filter) {
     try {
