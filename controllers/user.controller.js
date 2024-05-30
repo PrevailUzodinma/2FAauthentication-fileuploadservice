@@ -1,5 +1,5 @@
 const UserService = require("../services/user.service");
-const sendTransactionalEmails = require("../utils/email");
+const sendEmail = require("../utils/email");
 
 class UserController {
   async register(req, res) {
@@ -14,7 +14,7 @@ class UserController {
       const confirmationLink = `${req.protocol}://${req.get(
         "host"
       )}/api/v1/users/confirm/${newUser._id}`;
-      const message = `Please confirm your email by clicking the following link: ${confirmationLink}`;
+      const message = `Please confirm your email by clicking the following link: \n \n ${confirmationLink}`;
       await sendEmail({
         email: newUser.email,
         subject: `Email Confirmation`,
