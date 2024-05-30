@@ -10,7 +10,7 @@ class UserService {
       const hashedpassword = await bcrypt.hash(password, salt);
       const newUser = await User.create({
         email,
-        password: hashedpassword
+        password: hashedpassword,
       });
       return newUser;
     } catch (error) {
@@ -18,14 +18,22 @@ class UserService {
     }
   }
 
-   async findUserById(id) {
+  async findUserById(id) {
     try {
       const user = await User.findById({ _id: id });
       return user;
     } catch (error) {
       throw new Error("error occured while finding a user by id");
     }
-  };
+  }
+
+  async delete(id) {
+    try {
+      return await User.findByIdAndDelete(id);
+    } catch (error) {
+      throw new Error("error occured while deleting this user");
+    }
+  }
 }
 
-module.exports = new UserService()
+module.exports = new UserService();

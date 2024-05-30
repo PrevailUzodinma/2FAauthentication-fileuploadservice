@@ -30,7 +30,7 @@ class UserController {
     }
   }
 
-  async confirm(res, req) {
+  async confirm(req, res) {
     try {
       // retrieve id from request parameter
       const { id } = req.params;
@@ -45,6 +45,8 @@ class UserController {
         });
       }
       existingUser.confirmed = true;
+      await existingUser.save();
+
       res.status(200).json({
         success: true,
         message:
@@ -52,6 +54,37 @@ class UserController {
       });
     } catch (error) {
       res.status(500).send(error.message);
+    }
+  }
+
+  async deleteUser(req, res) {
+    try {
+      const userId = req.params.id;
+      //Check if the user to delete is in the database
+      const existingUser = await UserService.findUserById({
+        _id: userId,
+      });
+      if (!existingUser) {
+        res.status(403).json({
+          success: false,
+          message: "User to delete does not exist",
+        });
+      }
+
+      const deletedUser = await UserService.delete(userId);
+
+      res.status(200).json({
+        success: true,
+        message: "User deleted successfully",
+        data: deletedUser,
+      });
+    } catch (error) {
+      // Handle errors
+      console.error("Error creating user:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
     }
   }
 }
