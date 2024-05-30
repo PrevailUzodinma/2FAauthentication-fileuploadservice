@@ -21,9 +21,35 @@ class UserController {
         message: message,
       });
 
-      res
-        .status(201)
-        .send("Registration successful! Please check your email to confirm.");
+      res.status(201).json({
+        success: true,
+        message: "Registration successful! Please check your email to confirm.",
+      });
+    } catch (error) {
+      res.status(500).send(error.message);
+    }
+  }
+
+  async confirm(res, req) {
+    try {
+      // retrieve id from request parameter
+      const { id } = req.params;
+
+      // find user that has that id in the database
+      const existingUser = UserService.findUserById(id);
+
+      if (!existingUser) {
+        res.status(404).json({
+          success: false,
+          message: "Oops! Not Found. User does not exist",
+        });
+      }
+      existingUser.confirmed = true;
+      res.status(200).json({
+        success: true,
+        message:
+          "Congratulations! Your email has been confirmed, you may proceed to login",
+      });
     } catch (error) {
       res.status(500).send(error.message);
     }
