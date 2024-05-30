@@ -1,7 +1,7 @@
 const UserService = require("../services/user.service");
-const redisClient = require("../config/redis.config")
+const redisClient = require("../config/redis.config");
 const sendEmail = require("../utils/email");
-const generateOtp = require("../services/otp.service")
+const generateOtp = require("../services/otp.service");
 
 class UserController {
   async register(req, res) {
@@ -74,12 +74,10 @@ class UserController {
       if (!existingUser) {
         return res.status(404).json({ message: "User does not exist" });
       } else if (existingUser.confirmed === false) {
-        return res
-          .status(400)
-          .json({
-            message:
-              "User email has not been confirmed, please confirm your email before logging in",
-          });
+        return res.status(400).json({
+          message:
+            "User email has not been confirmed, please confirm your email before logging in",
+        });
       }
       // take user password and compare to entered password
       const isPasswordValid = await bcrypt.compare(
@@ -95,11 +93,19 @@ class UserController {
       const otp = generateOtp();
       await redisClient.setex(`otp:${existingUser._id}`, 300, otp); // 300 seconds = 5 minutes
 
-       // Send OTP to user's email
+      // Send OTP to user's email
+      await sendEmail({
+        email: existingUser.email,
+        subject: `Your OTP Code`,
+        message: `Your OTP code is: ${otp}. It will expire in 5 minutes.`,
+      });
+      res.status(200).json({
+        success: "true",
+        message: "OTP sent to your email",
+      });
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Error occurred while login", error: error });
+      // Handle errors
+      res.status(500).send(error.message);
     }
   }
 
