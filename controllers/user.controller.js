@@ -32,28 +32,50 @@ class UserController {
 
   async confirm(req, res) {
     try {
-      // retrieve id from request parameter
+      // Retrieve id from request parameters
       const { id } = req.params;
-
-      // find user that has that id in the database
-      const existingUser = UserService.findUserById(id);
-
+  
+      // Find user by id in the database
+      const existingUser = await UserService.findUserById(id);
+  
       if (!existingUser) {
-        res.status(404).json({
+        return res.status(404).json({
           success: false,
           message: "Oops! Not Found. User does not exist",
         });
       }
+  
+      // Confirm user
       existingUser.confirmed = true;
       await existingUser.save();
+  
+      // Send success response
+      res.status(200).json({
+        success: true,
+        message: "Congratulations! Your email has been confirmed, you may proceed to login",
+      });
+    } catch (error) {
+      // Handle errors
+      res.status(500).send(error.message);
+    }
+  }  
+
+  async fetchAll(req, res) {
+    try {
+      const fetchedUsers = await UserService.fetch({});
 
       res.status(200).json({
         success: true,
-        message:
-          "Congratulations! Your email has been confirmed, you may proceed to login",
+        message: "User fetched successfully",
+        data: fetchedUsers,
       });
     } catch (error) {
-      res.status(500).send(error.message);
+      // Handle errors
+      console.error("Error creating user:", error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
     }
   }
 

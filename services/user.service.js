@@ -26,6 +26,14 @@ class UserService {
       throw new Error("error occured while finding a user by id");
     }
   }
+  // fetch all users
+  async fetch(filter) {
+    try {
+      return await User.find(filter);
+    } catch (error) {
+      throw new Error("error occured while deleting this user");
+    }
+  }
 
   async delete(id) {
     try {
