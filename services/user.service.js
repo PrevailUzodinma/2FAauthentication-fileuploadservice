@@ -17,6 +17,15 @@ class UserService {
       throw new Error("Error occured while creating user in database");
     }
   }
+
+   async findUserById(id) {
+    try {
+      const user = await User.findById({ _id: id });
+      return user;
+    } catch (error) {
+      throw new Error("error occured while finding a user by id");
+    }
+  };
 }
 
 module.exports = new UserService()
