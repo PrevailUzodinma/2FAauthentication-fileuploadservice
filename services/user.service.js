@@ -36,6 +36,16 @@ class UserService {
     }
   }
 
+    // find user by apikey
+    async findUserByApikey(apikey) {
+      try {
+        const user = await User.findOne({ apikey: apikey });
+        return user;
+      } catch (error) {
+        throw new Error("error occured while finding a user by apikey");
+      }
+    }
+
   // fetch all users
   async fetch(filter) {
     try {
