@@ -1,7 +1,6 @@
 const UserService = require("../services/user.service");
-const redisClient = require("../config/redis.config");
 const sendEmail = require("../utils/email");
-const generateOtp = require("../services/otp.service");
+const OtpService = require("../services/otp.service");
 const bcrypt = require("bcryptjs");
 
 class UserController {
@@ -17,7 +16,7 @@ class UserController {
       const confirmationLink = `${req.protocol}://${req.get(
         "host"
       )}/api/v1/users/confirm/${newUser._id}`;
-      const message = `Please confirm your email by clicking the following link: \n \n ${confirmationLink}`;
+      const message = `Please confirm your email by clicking the following link: \n \n ${confirmationLink} \n \nBest Regards,\nKryptonia Support`;
       await sendEmail({
         email: newUser.email,
         subject: `Email Confirmation`,
@@ -89,18 +88,24 @@ class UserController {
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid Password" });
       }
+      // Check if a valid OTP already exists for the user
+      const existingOTP = await OtpService.findUserById(existingUser._id);
 
-      // Generate OTP and save it in Redis with a 5-minute expiration
-      const otp = generateOtp();
-      console.log(otp)
-      await redisClient.setex(`otp:${existingUser._id}`, 300, otp); // 300 seconds = 5 minutes
+      if (existingOTP) {
+        return res.status(400).json({
+          message: "OTP already sent. Please check your email for OTP",
+        });
+      }
+      // No valid OTP found, generate OTP and save it in the DB
+      const otp = await OtpService.generateAndSaveOTP(existingUser._id);
 
       // Send OTP to user's email
       await sendEmail({
         email: existingUser.email,
         subject: `Your OTP Code`,
-        message: `Your OTP code is: ${otp}. It will expire in 5 minutes.`,
+        message: `Your OTP code is: ${otp}. It will expire in 5 minutes. \n \nBest Regards,\nKryptonia Support`,
       });
+
       res.status(200).json({
         success: "true",
         message: "OTP sent to your email",
@@ -122,7 +127,7 @@ class UserController {
       });
     } catch (error) {
       // Handle errors
-      console.error("Error creating user:", error);
+      console.error("Error fetching users:", error);
       return res.status(500).json({
         success: false,
         message: "Internal server error",
@@ -134,11 +139,9 @@ class UserController {
     try {
       const userId = req.params.id;
       //Check if the user to delete is in the database
-      const existingUser = await UserService.findUserById({
-        _id: userId,
-      });
+      const existingUser = await UserService.findUserById(userId);
       if (!existingUser) {
-        res.status(403).json({
+        return res.status(403).json({
           success: false,
           message: "User to delete does not exist",
         });
@@ -153,7 +156,7 @@ class UserController {
       });
     } catch (error) {
       // Handle errors
-      console.error("Error creating user:", error);
+      console.error("Error deleting user:", error);
       return res.status(500).json({
         success: false,
         message: "Internal server error",
