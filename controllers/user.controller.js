@@ -3,6 +3,7 @@ const sendEmail = require("../utils/email");
 const OtpService = require("../services/otp.service");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const generateApikey = require("../utils/generateApikey");
 
 class UserController {
   async register(req, res) {
@@ -174,6 +175,32 @@ class UserController {
     } catch (error) {
       console.error("Error during OTP verification:", error);
       return res.status(500).json({ message: "Internal server error" });
+    }
+  }
+
+  async generateApikey(req, res) {
+    try {
+      // retrieve user email from request body
+      const { email } = req.body;
+
+      // find existing user with email
+      const existingUser = await UserService.findUserByEmail(email);
+      if (!existingUser) {
+        return res.status(400).json({
+          message: "Oops! there's no such Kryptonian with this email",
+        });
+      }
+      const apikey = generateApikey();
+      existingUser.apikey = apikey;
+      await existingUser.save();
+
+      res.status(200).json({
+        message: "Apikey generated successfully",
+        apikey,
+      });
+    } catch (error) {
+      // Handle errors
+      res.status(500).send(error.message);
     }
   }
 
