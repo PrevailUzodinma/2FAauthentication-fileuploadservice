@@ -88,14 +88,20 @@ class UserController {
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid Password" });
       }
-      // Check if a valid OTP already exists for the user
+      // Check if a valid OTP already exists for the user (within time frame)
       const existingOTP = await OtpService.findUserById(existingUser._id);
 
       if (existingOTP) {
-        return res.status(400).json({
-          message: "OTP already sent. Please check your email for OTP",
-        });
+        const now = new Date();
+        const expiryTime = 
+          existingOTP.expiresAt
+
+        if (now < expiryTime) {
+          return res.status(400).json({
+            message: "OTP already sent. Please check your email for OTP",
+        })
       }
+    }
       // No valid OTP found, generate OTP and save it in the DB
       const otp = await OtpService.generateAndSaveOTP(existingUser._id);
 
@@ -134,6 +140,7 @@ class UserController {
       });
     }
   }
+  
 
   async deleteUser(req, res) {
     try {
@@ -164,5 +171,6 @@ class UserController {
     }
   }
 }
+
 
 module.exports = new UserController();
