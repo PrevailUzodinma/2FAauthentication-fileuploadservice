@@ -6,7 +6,7 @@ const UPLOAD_FOLDER = "./uploads/";
 const ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "gif"];
 
 class FileService {
-    
+
   allowedFile(file) {
     const ext = path.extname(file.originalname).toLowerCase();
     return ALLOWED_EXTENSIONS.includes(ext.substring(1));
@@ -30,4 +30,4 @@ class FileService {
   }
 }
 
-module.exports = { allowedFile, saveFileToUser };
+module.exports = new FileService();

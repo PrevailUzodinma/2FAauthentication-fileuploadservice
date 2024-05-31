@@ -12,3 +12,4 @@ async function validateApiKey(req, res, next) {
     next();
   }
   
+module.exports = validateApiKey;
