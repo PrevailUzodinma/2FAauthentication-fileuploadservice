@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  apikey:String,
   // to track the confirmation status of a user
   confirmed: {
     type: Boolean,

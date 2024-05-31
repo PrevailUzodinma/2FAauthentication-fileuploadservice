@@ -6,6 +6,7 @@ router.post('/register', UserController.register);
 router.get('/confirm/:id', UserController.confirm);
 router.post('/login', UserController.login)
 router.post('/verify-otp', verifyToken, UserController.verifyOtp)
+router.post('/generate-apikey', UserController.generateApikey)
 router.get("/", UserController.fetchAll);
 router.delete('/:id', UserController.deleteUser);
 

@@ -190,12 +190,17 @@ class UserController {
           message: "Oops! there's no such Kryptonian with this email",
         });
       }
+      if (existingUser.apikey) {
+        return res.status(400).json({
+          message: "Dear Kryptonian, you cannot generate another apikey",
+        });
+      }
       const apikey = generateApikey();
       existingUser.apikey = apikey;
       await existingUser.save();
 
       res.status(200).json({
-        message: "Apikey generated successfully",
+        message: "Apikey generated successfully, remember to copy and paste it somewhere, you will not see this again",
         apikey,
       });
     } catch (error) {
