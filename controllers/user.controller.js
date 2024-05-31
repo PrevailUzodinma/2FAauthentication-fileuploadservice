@@ -2,6 +2,7 @@ const UserService = require("../services/user.service");
 const sendEmail = require("../utils/email");
 const OtpService = require("../services/otp.service");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 class UserController {
   async register(req, res) {
@@ -115,9 +116,9 @@ class UserController {
       const token = jwt.sign(
         { userId: existingUser._id },
         process.env.JWT_SECRET,
-        { expiresIn: "5m" }
+        { expiresIn: "10m" }
       );
-      // Set token as cookie
+      /// Set token as cookie
       res.cookie("token", token, { httpOnly: true });
 
       res.status(200).json({
@@ -170,7 +171,10 @@ class UserController {
         message: "OTP verified, login successful",
         token,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error("Error during OTP verification:", error);
+      return res.status(500).json({ message: "Internal server error" });
+    }
   }
 
   async fetchAll(req, res) {
