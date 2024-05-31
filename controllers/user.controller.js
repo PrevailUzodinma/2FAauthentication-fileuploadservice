@@ -93,15 +93,14 @@ class UserController {
 
       if (existingOTP) {
         const now = new Date();
-        const expiryTime = 
-          existingOTP.expiresAt
+        const expiryTime = existingOTP.expiresAt;
 
         if (now < expiryTime) {
           return res.status(400).json({
             message: "OTP already sent. Please check your email for OTP",
-        })
+          });
+        }
       }
-    }
       // No valid OTP found, generate OTP and save it in the DB
       const otp = await OtpService.generateAndSaveOTP(existingUser._id);
 
@@ -122,6 +121,16 @@ class UserController {
     }
   }
 
+  async verifyOtp(req, res) {
+    try {
+      // retrieve userId and otp from req.user and req.body respectively
+      const { userId } = req.user;
+      const { otp } = req.body;
+
+      // verify OTP
+    } catch (error) {}
+  }
+
   async fetchAll(req, res) {
     try {
       const fetchedUsers = await UserService.fetch({});
@@ -140,7 +149,6 @@ class UserController {
       });
     }
   }
-  
 
   async deleteUser(req, res) {
     try {
@@ -171,6 +179,5 @@ class UserController {
     }
   }
 }
-
 
 module.exports = new UserController();
