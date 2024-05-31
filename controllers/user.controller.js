@@ -2,6 +2,7 @@ const UserService = require("../services/user.service");
 const redisClient = require("../config/redis.config");
 const sendEmail = require("../utils/email");
 const generateOtp = require("../services/otp.service");
+const bcrypt = require("bcryptjs");
 
 class UserController {
   async register(req, res) {
@@ -91,6 +92,7 @@ class UserController {
 
       // Generate OTP and save it in Redis with a 5-minute expiration
       const otp = generateOtp();
+      console.log(otp)
       await redisClient.setex(`otp:${existingUser._id}`, 300, otp); // 300 seconds = 5 minutes
 
       // Send OTP to user's email
