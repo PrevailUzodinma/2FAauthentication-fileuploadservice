@@ -18,19 +18,13 @@ class OtpService {
     return otp;
   }
 
-  async verifyOTP(userId, otpAttempt) {
-    const otpDoc = await OTP.findOne({ userId }).sort({ expiresAt: -1 });
-
-    if (!otpDoc || otpDoc.otp !== otpAttempt) {
-      return false; // OTP not found or doesn't match
+  async findtoverifyOTP(userId) {
+    try {
+      const otpDoc = await OTP.findOne({ userId }).sort({ expiresAt: -1 });
+      return otpDoc;
+    } catch (error) {
+      throw new Error("error occured while verifying otp");
     }
-
-    if (otpDoc.expiresAt < new Date()) {
-      return false; // OTP has expired
-    }
-
-    // OTP is valid
-    return true;
   }
 
   // find user by id
@@ -42,6 +36,15 @@ class OtpService {
       throw new Error("error occured while finding a user by id");
     }
   }
-}
+
+  async deleteOtp(id){
+    try {
+        return await OTP.deleteOne({ _id: id });
+      } catch (error) {
+        throw new Error("error deleting otp");
+      }
+    }
+  }
+
 
 module.exports = new OtpService();

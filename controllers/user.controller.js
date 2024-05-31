@@ -111,9 +111,19 @@ class UserController {
         message: `Your OTP code is: ${otp}. It will expire in 5 minutes. \n \nBest Regards,\nKryptonia Support`,
       });
 
+      // create and send temporary token, to carry userId in the payload, for use during OTP Validation.
+      const token = jwt.sign(
+        { userId: existingUser._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "5m" }
+      );
+      // Set token as cookie
+      res.cookie("token", token, { httpOnly: true });
+
       res.status(200).json({
         success: "true",
         message: "OTP sent to your email",
+        token,
       });
     } catch (error) {
       // Handle errors
@@ -128,6 +138,38 @@ class UserController {
       const { otp } = req.body;
 
       // verify OTP
+      const otpDoc = await OtpService.findtoverifyOTP(userId);
+
+      // if no OTP found
+      if (!otpDoc) {
+        return res
+          .status(400)
+          .json({ message: "OTP not found or has expired" });
+      }
+      // if OTP does not match
+      if (otpDoc.otp !== otp) {
+        return res.status(401).json({ message: "Invalid OTP" });
+      }
+      // if OTP has expired
+      if (otpDoc.expiresAt < new Date()) {
+        return res.status(400).json({ message: "OTP has expired" });
+      }
+
+      // delete otp from database
+      await OtpService.deleteOtp(otpDoc._id);
+
+      // create a login token
+      const token = jwt.sign({ userId: userId }, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
+      // Set token as cookie
+      res.cookie("token", token, { httpOnly: true });
+
+      return res.status(200).json({
+        success: true,
+        message: "OTP verified, login successful",
+        token,
+      });
     } catch (error) {}
   }
 
