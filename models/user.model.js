@@ -10,11 +10,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  apikey:String,
+  apikey: String,
   // to track the confirmation status of a user
   confirmed: {
     type: Boolean,
     default: false,
+  },
+  images: {
+    type: Array,
+    filename: String,
+    data: String,
+    contentType: String,
   },
 });
 
