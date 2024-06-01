@@ -1,9 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const User = require("../models/user.model");
-
-// The directory where files are temporarily stored during the upload process.
-const UPLOAD_FOLDER = "./uploads/";
 
 // An array of allowed file extensions for uploaded files.
 const ALLOWED_EXTENSIONS = ["png", "jpg", "jpeg", "gif"];
@@ -17,24 +13,30 @@ class FileService {
   }
 
   async saveFileToUser(user, file) {
-    // Read the file from the temporary storage location using fs.readFileSync.
-    const imgData = fs.readFileSync(file.path);
-    // Convert the file data to a Base64 encoded string using imgData.toString('base64').
-    const base64Data = imgData.toString("base64");
-    // Retrieve the MIME type of the file from file.mimetype.
-    const contentType = file.mimetype;
-    // Add an object to the user's images array containing file name, data and content type
-    user.images.push({
-      filename: file.originalname,
-      data: base64Data,
-      contentType: contentType,
-    });
+    try {
+      // Read the file from the temporary storage location using fs.readFileSync.
+      const imgData = fs.readFileSync(file.path);
+      // Convert the file data to a Base64 encoded string using imgData.toString('base64').
+      const base64Data = imgData.toString("base64");
+      // Retrieve the MIME type of the file from file.mimetype.
+      const contentType = file.mimetype;
+      // Add an object to the user's images array containing file name, data and content type
+      user.images.push({
+        filename: file.originalname,
+        data: base64Data,
+        contentType: contentType,
+      });
 
-    // Save the updated user document to the database
-    await user.save();
+      // Save the updated user document to the database
+      await user.save();
 
-    // Deletes the file from the temporary storage location (filesystem)
-    fs.unlinkSync(file.path);
+      // Deletes the file from the upload folder: the temporary storage location (filesystem)
+      fs.unlinkSync(file.path);
+      console.log("File deleted successfully");
+    } catch (error) {
+      // Handle errors during file deletion
+      console.error("Error deleting file:", error);
+    }
   }
 }
 
