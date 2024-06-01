@@ -1,4 +1,6 @@
 const FileService = require("../services/file.service");
+const UserService = require("../services/user.service");
+
 
 class FileController {
   async uploadFile(req, res) {
@@ -25,7 +27,7 @@ class FileController {
   async getAllFiles(req, res) {
     try {
       // Find all users with their uploaded images
-      const users = await User.find({ images: { $exists: true, $ne: [] } });
+      const users = await UserService.fetch({ images: { $exists: true, $ne: [] } });
 
       // Collect all images from all users
       const allImages = users.reduce((images, user) => {
@@ -51,6 +53,45 @@ class FileController {
       res.status(500).json({
         success: false,
         message: "Failed to fetch images",
+        error: error.message,
+      });
+    }
+  }
+
+  // Fetch a single uploaded file by its filename
+  async getFileById(req, res) {
+    try {
+      const { id } = req.params;
+
+      // Find user by id
+      const user = await UserService.findBy({ "images._id": id });
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "File not found",
+        });
+      }
+
+      // Find the specific image
+      const image = user.images.id(id);
+
+      if (!image) {
+        return res.status(404).json({
+          success: false,
+          message: "File not found",
+        });
+      }
+
+      res.status(200).json({
+        success: true,
+        message: "Image fetched successfully",
+        data: image,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch the image",
         error: error.message,
       });
     }
