@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     data: String,
     contentType: String,
   },
+  // modifying my user.js model to include an apiKeyInvalidated field.
   apiKeyInvalidated: {
     type: Boolean,
     default: false,
