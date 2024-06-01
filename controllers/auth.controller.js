@@ -210,6 +210,29 @@ class AuthController {
       res.status(500).send(error.message);
     }
   }
+
+  // Invalidate API key
+  async invalidateApikey(req, res) {
+    try {
+      const { userId } = req.user; // Extract userId from the decoded JWT
+      const user = await UserService.findUserById(userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      user.apiKeyInvalidated = true;
+      await user.save();
+
+      res.status(200).json({
+        sucess: true,
+        message: "API key invalidated successfully",
+      });
+    } catch (error) {
+      console.error("Error invalidating API key:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
 }
 
 module.exports = new AuthController();
