@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     data: String,
     contentType: String,
   },
+  apiKeyInvalidated: {
+    type: Boolean,
+    default: false,
+  }
 });
 
 const User = mongoose.model("User", userSchema);
