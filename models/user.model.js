@@ -1,10 +1,5 @@
 const mongoose = require("mongoose");
-
-const imageSchema = new mongoose.Schema({
-  filename: { type: String, required: true },
-  data: { type: String, required: true },
-  contentType: { type: String, required: true },
-});
+const imageSchema = require("./image.model");
 
 const userSchema = new mongoose.Schema({
   email: {

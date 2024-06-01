@@ -34,9 +34,9 @@ class FileController {
         if (user.images && user.images.length > 0) {
           user.images.forEach((image) => {
             images.push({
-              userId: user._id,
+              id: image._id,
               filename: image.filename,
-              data: image.data,
+              imageData: image.data,
               contentType: image.contentType,
             });
           });
