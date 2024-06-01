@@ -15,7 +15,10 @@ class FileController {
 
     await FileService.saveFileToUser(user, file);
 
-    res.status(200).json({ message: "File successfully uploaded and stored" });
+    res.status(200).json({
+      success: true,
+      message: "File successfully uploaded and stored",
+    });
   }
 }
 

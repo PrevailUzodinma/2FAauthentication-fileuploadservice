@@ -200,6 +200,7 @@ class AuthController {
       await existingUser.save();
 
       res.status(200).json({
+        sucess: true,
         message:
           "Apikey generated successfully, remember to copy and paste it somewhere, you will not see this again",
         apikey,
@@ -209,7 +210,6 @@ class AuthController {
       res.status(500).send(error.message);
     }
   }
-
 }
 
 module.exports = new AuthController();
