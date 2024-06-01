@@ -35,13 +35,32 @@ class UserService {
       throw new Error("error occured while finding a user by email");
     }
   }
+  // find user by any query
+  async findBy(query) {
+    try {
+      const user = await User.findOne(query);
+      return user;
+    } catch (error) {
+      throw new Error("error occured while finding a user");
+    }
+  }
+
+  // find user by apikey
+  async findUserByApikey(apikey) {
+    try {
+      const user = await User.findOne({ apikey: apikey });
+      return user;
+    } catch (error) {
+      throw new Error("error occured while finding a user by apikey");
+    }
+  }
 
   // fetch all users
   async fetch(filter) {
     try {
       return await User.find(filter);
     } catch (error) {
-      throw new Error("error occured while deleting this user");
+      throw new Error("error occured while fetching users");
     }
   }
 
