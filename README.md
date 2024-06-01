@@ -307,8 +307,8 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 
 1.  **Clone the Repository**:
     ```
-    git clone https://github.com/your-username/kryptoniteapp.git
-    cd kryptoniteapp
+    git clone https://github.com/PrevailUzodinma/2FAauthentication-fileuploadservice
+    cd 2FAauthentication-fileuploadservice
     ```
 
 2.  **Install Dependencies**:
@@ -326,7 +326,7 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
         EMAIL_SERVICE=your_email_service
         EMAIL_USER=your_email_user
         EMAIL_PASS=your_email_pass
-        ```
+      ```
 
 4.  **Run the Application**:
 
