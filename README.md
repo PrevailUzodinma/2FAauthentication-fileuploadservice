@@ -47,6 +47,7 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 
 ### API Endpoints
 
+### Base URL: https://kryptonite.onrender.com
 #### User Authentication
 
 -   **Register**: 
@@ -305,9 +306,10 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 ### Setup Instructions
 
 1.  **Clone the Repository**:
-
-    `git clone https://github.com/your-username/kryptoniteapp.git
-    cd kryptoniteapp`
+    ```
+    git clone https://github.com/your-username/kryptoniteapp.git
+    cd kryptoniteapp
+    ```
 
 2.  **Install Dependencies**:
 
@@ -317,13 +319,14 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 
     -   Create a `.env` file in the root directory.
     -   Add the following environment variables:
-    
-        `PORT=3000
+      ```
+        PORT=3000
         MONGO_URI=your_mongodb_connection_string
         JWT_SECRET=your_jwt_secret
         EMAIL_SERVICE=your_email_service
         EMAIL_USER=your_email_user
-        EMAIL_PASS=your_email_pass`
+        EMAIL_PASS=your_email_pass
+        ```
 
 4.  **Run the Application**:
 
