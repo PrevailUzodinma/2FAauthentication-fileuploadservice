@@ -51,7 +51,7 @@ class UserService {
     try {
       return await User.find(filter);
     } catch (error) {
-      throw new Error("error occured while deleting this user");
+      throw new Error("error occured while fetching users");
     }
   }
 
