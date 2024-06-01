@@ -39,6 +39,7 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
     -   Uploaded files are stored as Base64 strings in the database.
     -   Uploaded files are deleted from the system after being stored.
     -   Only image files are allowed.
+    -   **Note**: Files should not be greater than 16MB in size. This limitation is due to the constraints of storing large files in MongoDB using Multer, which can lead to performance issues and inefficient storage. For larger files, a dedicated file storage service like AWS S3 or Google Cloud Storage is recommended.
 4.  **Image Access**:
 
     -   Images can be accessed without authentication, as required by Supergirl (Kara Zor-El).
