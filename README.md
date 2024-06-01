@@ -237,6 +237,15 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
           "Authorization": "Bearer auth_jwt_token"
         }
         ```
+    -   Request:
+
+        ```
+        json
+
+        {
+          "email": "example@gmail.com"
+        }
+        ```
     -   Response:
 
         ```

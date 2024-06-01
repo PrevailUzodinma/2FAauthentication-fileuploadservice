@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const imageSchema = new mongoose.Schema({
+  filename: { type: String, required: true },
+  data: { type: String, required: true },
+  contentType: { type: String, required: true },
+});
+
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -16,12 +22,7 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  images: {
-    type: Array,
-    filename: String,
-    data: String,
-    contentType: String,
-  },
+  images: [imageSchema],
   // modifying my user.js model to include an apiKeyInvalidated field.
   apiKeyInvalidated: {
     type: Boolean,

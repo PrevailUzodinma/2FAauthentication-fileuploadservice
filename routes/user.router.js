@@ -8,7 +8,7 @@ router.get('/confirm/:id', AuthController.confirm);
 router.post('/login', AuthController.login)
 router.post('/verify-otp', verifyToken, AuthController.verifyOtp)
 router.post('/generate-apikey', AuthController.generateApikey)
-router.post('/invalidate-apikey', AuthController.invalidateApikey)
+router.post('/invalidate-apikey', verifyToken, AuthController.invalidateApikey)
 router.get("/", UserController.fetchAll);
 router.delete('/:id', UserController.deleteUser);
 
