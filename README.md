@@ -47,6 +47,8 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 
 ### API Endpoints
 
+#### Base URL: `https://2faauthentication-fileuploadservice.onrender.com`
+
 #### User Authentication
 
 -   **Register**: 
@@ -306,8 +308,8 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 
 1.  **Clone the Repository**:
 
-    `git clone https://github.com/your-username/kryptoniteapp.git
-    cd kryptoniteapp`
+    `git clone https://github.com/PrevailUzodinma/2FAauthentication-fileuploadservice
+    cd 2FAauthentication-fileuploadservice`
 
 2.  **Install Dependencies**:
 
