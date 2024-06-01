@@ -48,7 +48,8 @@ KryptoniteApp is designed to handle user authentication, including Two-Factor Au
 
 ### API Endpoints
 
-#### Base URL: `https://2faauthentication-fileuploadservice.onrender.com`
+#### Base URL: `https://kryptonite.onrender.com`
+
 
 #### User Authentication
 
